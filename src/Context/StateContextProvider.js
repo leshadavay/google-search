@@ -2,7 +2,7 @@ import "dotenv/config";
 import React, { createContext, useContext, useState } from "react";
 
 const StateContext = createContext();
-const baseUrl = "https://google-search3.p.rapidapi.com/api/v1/";
+const baseUrl = process.env.GS_BASE_URL;
 
 export function StateContextProvider({ children }) {
   const [results, setResults] = useState([]);
