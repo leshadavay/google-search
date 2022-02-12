@@ -1,24 +1,24 @@
-import "dotenv/config";
 import React, { createContext, useContext, useState } from "react";
 
 const StateContext = createContext();
-const baseUrl = process.env.GS_BASE_URL;
 
-export function StateContextProvider({ children }) {
+export const StateContextProvider = ({ children }) => {
+  const baseUrl = process.env.REACT_APP_GS_BASE_URL;
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState("");
 
   const getResults = async (url) => {
+    console.log(url);
     setLoading(true);
     const res = await fetch(`${baseUrl}${url}`, {
       headers: {
-        "x-rapidapi-host": process.env.GS_RAPID_API_HOST,
-        "x-rapidapi-key": process.env.GS_RAPID_API_KEY,
+        "x-rapidapi-host": process.env.REACT_APP_GS_RAPID_API_HOST,
+        "x-rapidapi-key": process.env.REACT_APP_GS_RAPID_API_KEY,
       },
     });
 
-    const data = await res.join();
+    const data = await res.json();
     setResults(data);
     setLoading(false);
   };
@@ -29,5 +29,5 @@ export function StateContextProvider({ children }) {
       {children}
     </StateContext.Provider>
   );
-}
+};
 export const useStateContext = () => useContext(StateContext);

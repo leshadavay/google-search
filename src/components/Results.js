@@ -1,23 +1,25 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useStateContext } from "../Context/StateContextProvider";
-import Loading from "./Loading";
+import { Loading } from "./Loading";
+import ReactPlayer from "react-player";
 
-function Results() {
+export const Results = () => {
   const { loading, results, getResults, searchText } = useStateContext();
   const location = useLocation();
+  console.log(loading, location.pathname, results);
   useEffect(() => {
     if (searchText) {
       if (location.pathname === "./videos") {
-        getResults(`/search/q=${searchText} videos`);
+        getResults(`search/q=${searchText} videos`);
       } else {
-        getResults(`${location.pathname}/q=${searchText}&num=40`);
+        getResults(`${location.pathname}/q=${searchText}`);
       }
     }
   }, [searchText, location.pathname]);
   if (loading) return <Loading />;
   switch (location.pathname) {
-    case "./search":
+    case "/search":
       return (
         <div className="sm:px-56 flex flex-wrap justify-between space-y-6">
           {results?.results?.map(({ link, title }, index) => (
@@ -94,6 +96,4 @@ function Results() {
     default:
       return "Error";
   }
-}
-
-export default Results;
+};
